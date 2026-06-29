@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hoxline-lab.local/schemas/proofcard-v0.schema.json",
+  "title": "ProofCard v0",
+  "type": "object",
+  "required": [
+    "candidate_id",
+    "proof_ceiling",
+    "validation_result",
+    "sample_set",
+    "what_passed",
+    "what_failed",
+    "what_was_not_tested",
+    "safe_claims",
+    "blocked_claims"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string"
+    },
+    "proof_ceiling": {
+      "const": "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY"
+    },
+    "validation_result": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "sample_set": {
+      "type": "string"
+    },
+    "what_passed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "what_failed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "what_was_not_tested": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "safe_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
+

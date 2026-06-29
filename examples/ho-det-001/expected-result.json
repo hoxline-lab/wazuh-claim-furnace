@@ -1,0 +1,15 @@
+{
+  "schema_version": "expected-result-v0",
+  "candidate_id": "HO-DET-001",
+  "proof_ceiling": "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY",
+  "expected_status": "pass",
+  "positive_sample": {
+    "path": "event-positive.json",
+    "should_match": true
+  },
+  "negative_sample": {
+    "path": "event-negative.json",
+    "should_match": false
+  }
+}
+

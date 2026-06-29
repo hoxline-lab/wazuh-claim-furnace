@@ -1,0 +1,66 @@
+{
+  "schema_version": "rule-contract-v0",
+  "candidate_id": "HO-DET-001",
+  "title": "Sample encoded PowerShell command line",
+  "engine_family": "wazuh-style-json-sample",
+  "proof_ceiling": "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY",
+  "description": "Deterministic local sample contract for a Sysmon-like process creation event containing PowerShell EncodedCommand usage.",
+  "required_fields": [
+    "agent.name",
+    "agent.ip",
+    "agent.ipv6",
+    "data.win.system.eventID",
+    "data.win.eventdata.user",
+    "data.win.eventdata.image",
+    "data.win.eventdata.commandLine"
+  ],
+  "match": {
+    "all": [
+      {
+        "field": "data.win.system.eventID",
+        "operator": "equals",
+        "value": "1"
+      },
+      {
+        "field": "data.win.eventdata.image",
+        "operator": "contains_ci",
+        "value": "powershell.exe"
+      },
+      {
+        "field": "data.win.eventdata.commandLine",
+        "operator": "contains_any_ci",
+        "values": [
+          "-encodedcommand",
+          "-enc "
+        ]
+      }
+    ]
+  },
+  "fixtures": {
+    "positive": "event-positive.json",
+    "negative": "event-negative.json",
+    "expected_result": "expected-result.json"
+  },
+  "expected": {
+    "positive_matches": true,
+    "negative_matches": false
+  },
+  "safe_claims": [
+    "Sample-level Wazuh-style contract validation passed for controlled fixtures.",
+    "Positive and negative sample behavior matched the expected local contract."
+  ],
+  "blocked_claims": [
+    "runtime active",
+    "signal observed",
+    "production ready",
+    "enterprise validated",
+    "SOC deployed",
+    "autonomous SOC",
+    "AI approved",
+    "analyst approved",
+    "public-safe runtime proof",
+    "case closed",
+    "live Wazuh proof",
+    "customer deployed"
+  ]
+}

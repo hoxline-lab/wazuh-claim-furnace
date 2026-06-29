@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hoxline-lab.local/schemas/rule-contract-v0.schema.json",
+  "title": "Rule Contract v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "title",
+    "engine_family",
+    "proof_ceiling",
+    "required_fields",
+    "match",
+    "fixtures",
+    "expected",
+    "safe_claims",
+    "blocked_claims"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rule-contract-v0"
+    },
+    "candidate_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "engine_family": {
+      "const": "wazuh-style-json-sample"
+    },
+    "proof_ceiling": {
+      "const": "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY"
+    },
+    "required_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "match": {
+      "type": "object"
+    },
+    "fixtures": {
+      "type": "object",
+      "required": [
+        "positive",
+        "negative"
+      ]
+    },
+    "expected": {
+      "type": "object",
+      "required": [
+        "positive_matches",
+        "negative_matches"
+      ]
+    },
+    "safe_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
+

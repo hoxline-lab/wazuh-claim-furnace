@@ -1,0 +1,29 @@
+{
+  "agent": {
+    "id": "001",
+    "name": "HOST-001",
+    "ip": "192.0.2.10",
+    "ipv6": "2001:db8::10"
+  },
+  "data": {
+    "win": {
+      "system": {
+        "eventID": "1",
+        "providerName": "Microsoft-Windows-Sysmon"
+      },
+      "eventdata": {
+        "user": "USER-001",
+        "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "commandLine": "powershell.exe -NoProfile -EncodedCommand UwBBAE0AUABMAEUAXwBPAE4ATABZAA==",
+        "parentImage": "C:\\Users\\USER-001\\Downloads\\sample-runner.exe"
+      }
+    }
+  },
+  "rule": {
+    "groups": [
+      "sysmon",
+      "windows"
+    ]
+  }
+}
+
