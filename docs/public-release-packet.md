@@ -25,11 +25,13 @@ git diff --check
 
 ## Local Validation Status
 
-Fill this from the final local run before public push. Do not infer status from commit history.
+The public release surface is expected to be validated with the commands above before each public push. Passing CI is useful reviewer evidence, but local validation is still rerun before changing public claims.
 
 ## Wazuh Capability Status
 
-If `wazuh-logtest` is unavailable, record `WAZUH_RUNTIME_BRIDGE_NOT_EXECUTED` and keep the current ceiling.
+Current public artifact status: `WAZUH_RUNTIME_BRIDGE_NOT_EXECUTED`.
+
+If `wazuh-logtest` is unavailable, keep the current ceiling.
 
 ## Safe Claims
 

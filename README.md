@@ -1,8 +1,22 @@
 # wazuh-claim-furnace
 
+[![claim-furnace](https://github.com/hoxline-lab/wazuh-claim-furnace/actions/workflows/claim-furnace.yml/badge.svg)](https://github.com/hoxline-lab/wazuh-claim-furnace/actions/workflows/claim-furnace.yml)
+
 `wazuh-claim-furnace` is a measurable Wazuh claim-control lab: static contract validation, public-safety scanning, ProofCard generation, and an optional read-only `wazuh-logtest` bridge without runtime overclaiming.
 
 It is not a Wazuh manager, not a deployment package, and not a proof portal. Feed it a contract, fixtures, and public wording; it returns deterministic validation output, rejects unsafe claims, and keeps every stronger claim behind an evidence gate.
+
+## Reviewer Quick Path
+
+1. Read `CLAIM_BOUNDARY.md` for the proof ceiling.
+2. Inspect `examples/ho-det-001/rule-contract.json` and the positive/negative fixtures.
+3. Run `py scripts\run_all.py`.
+4. Open `proofcards/ho-det-001-proofcard.md`.
+5. Confirm CI runs the same gates without private systems.
+
+## Why This Exists
+
+Detection writeups often blur the line between sample validation, tool compatibility, and real operational evidence. This lab makes that line measurable: claims are generated from controlled fixtures, checked by schema and mutation tests, and blocked when the public wording outruns the evidence.
 
 ## Proof Ceiling
 
