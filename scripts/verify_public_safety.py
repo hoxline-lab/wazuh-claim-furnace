@@ -12,7 +12,7 @@ from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_SUFFIXES = {".md", ".json", ".yml", ".yaml"}
-EXCLUDED_DIRS = {".git", ".pytest_cache", "__pycache__"}
+EXCLUDED_DIRS = {".git", ".pytest_cache", "__pycache__", "test-tmp", ".pytest_tmp"}
 ALLOWED_SECTION_MARKERS = (
     "blocked claims",
     "what it does not prove",
@@ -62,7 +62,7 @@ PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("customer_reference", re.compile(r"\bcustomer(?:s|'s)?\b", re.IGNORECASE)),
     ("private_hostname_hint", re.compile(r"\b(?:corp|internal|prod|dc|srv|wazuh-manager)[A-Za-z0-9._-]*(?:\d|[._-])[A-Za-z0-9._-]*\b", re.IGNORECASE)),
     ("ssh_private_key", re.compile(r"BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY", re.IGNORECASE)),
-    ("secret_assignment", re.compile(r"\b(?:api[_-]?key|password|token|secret|credential)\b\s*[:=]\s*['\"]?[A-Za-z0-9_./+=-]{12,}", re.IGNORECASE)),
+    ("secret_assignment", re.compile(r"(?:^|[\"'\s])(?:[A-Za-z0-9_-]*(?:token|secret|password|credential|api[_-]?key|apikey|access[_-]?token|refresh[_-]?token|bearer|private[_-]?key)[A-Za-z0-9_-]*)[\"']?\s*[:=]\s*[\"']?[A-Za-z0-9_./+=-]{12,}", re.IGNORECASE)),
 ]
 
 

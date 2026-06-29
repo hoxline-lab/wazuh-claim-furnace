@@ -14,6 +14,7 @@ This repository can prove only deterministic validation of controlled local samp
 - The ProofCard was generated from controlled local verifier output.
 - The Claim Firewall scanned public markdown and JSON artifacts for blocked wording.
 - The public-safety scanner checked public repo files for private data and secret-like material.
+- The stress harness rejected deterministic negative mutations.
 - The repository is CI-checkable without private telemetry or a live Wazuh manager.
 
 ## Blocked Claims

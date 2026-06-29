@@ -82,3 +82,19 @@ def test_negative_sample_accidentally_matching_fails(tmp_path: Path) -> None:
     result = verify_rule_contract.verify_contract(write_case(tmp_path, contract, negative=positive))
     assert result["status"] == "fail"
     assert "negative sample did not match expected result" in result["what_failed"]
+
+
+def test_temp_path_contract_outputs_display_paths_without_crashing(tmp_path: Path) -> None:
+    contract = verify_rule_contract.load_json(verify_rule_contract.DEFAULT_CONTRACT)
+    result = verify_rule_contract.verify_contract(write_case(tmp_path, contract))
+    assert result["status"] == "pass"
+    assert result["contract_path"].endswith("rule-contract.json")
+    assert "test_temp_path_contract_output" in result["contract_path"]
+
+
+def test_malformed_expected_result_schema_fails(tmp_path: Path) -> None:
+    contract = verify_rule_contract.load_json(verify_rule_contract.DEFAULT_CONTRACT)
+    expected = verify_rule_contract.load_json(verify_rule_contract.DEFAULT_CONTRACT.parent / "expected-result.json")
+    expected.pop("positive_sample")
+    with pytest.raises(verify_rule_contract.ContractError, match="expected result schema validation failed"):
+        verify_rule_contract.verify_contract(write_case(tmp_path, contract, expected=expected))

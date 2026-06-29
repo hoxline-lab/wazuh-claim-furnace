@@ -24,3 +24,9 @@ def test_logtest_sample_unavailable_returns_clean_status() -> None:
     result = run_wazuh_logtest_sample.run_sample(sample, "Z:/definitely/not/wazuh-logtest")
     assert result["status"] == "unavailable"
     assert result["proof_ceiling"] == "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY"
+
+
+def test_logtest_states_are_explicit() -> None:
+    unavailable = check_wazuh_capability.check("Z:/definitely/not/wazuh-logtest")
+    assert unavailable["status"] == "unavailable"
+    assert "available_not_executed" != unavailable["status"]

@@ -17,4 +17,3 @@ Passing checks mean the public repo is reproducible at the stated ceiling. They 
 ## Optional Bridge
 
 Wazuh logtest bridge execution is optional. If it is not run, record `WAZUH_RUNTIME_BRIDGE_NOT_EXECUTED` and keep the proof ceiling at `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY`.
-

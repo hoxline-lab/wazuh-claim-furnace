@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hoxline-lab.local/schemas/expected-result-v0.schema.json",
+  "title": "Expected Result v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "proof_ceiling",
+    "expected_status",
+    "positive_sample",
+    "negative_sample"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "expected-result-v0"
+    },
+    "candidate_id": {
+      "type": "string"
+    },
+    "proof_ceiling": {
+      "const": "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY"
+    },
+    "expected_status": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "positive_sample": {
+      "type": "object",
+      "required": [
+        "path",
+        "should_match"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "should_match": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "negative_sample": {
+      "type": "object",
+      "required": [
+        "path",
+        "should_match"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "should_match": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

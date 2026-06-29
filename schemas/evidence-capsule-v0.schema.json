@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hoxline-lab.local/schemas/evidence-capsule-v0.schema.json",
+  "title": "Evidence Capsule v0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "capsule_id",
+    "candidate_id",
+    "proof_ceiling",
+    "source_truth",
+    "validation_truth",
+    "wazuh_logtest_truth",
+    "runtime_truth",
+    "signal_truth",
+    "public_proof"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "evidence-capsule-v0"
+    },
+    "capsule_id": {
+      "type": "string"
+    },
+    "candidate_id": {
+      "type": "string"
+    },
+    "proof_ceiling": {
+      "enum": [
+        "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY",
+        "CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED"
+      ]
+    },
+    "source_truth": {
+      "type": "object"
+    },
+    "validation_truth": {
+      "type": "object"
+    },
+    "wazuh_logtest_truth": {
+      "type": "object"
+    },
+    "runtime_truth": {
+      "type": "object"
+    },
+    "signal_truth": {
+      "type": "object"
+    },
+    "public_proof": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

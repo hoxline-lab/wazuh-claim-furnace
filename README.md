@@ -10,7 +10,7 @@ It is not a Wazuh manager, not a deployment package, and not a proof portal. Fee
 |---|---|
 | Current ceiling | `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY` |
 | Optional next ceiling | `CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED` only if sanitized controlled `wazuh-logtest` execution succeeds |
-| Still blocked after logtest | runtime, signal, production, SOC deployment, public-safe runtime proof, analyst approval, AI disposition authority, case closure |
+| Still blocked after logtest | blocked: runtime, signal, production, SOC deployment, public-safe runtime proof, analyst approval, AI disposition authority, case closure |
 
 ## What It Proves Now
 
@@ -21,6 +21,7 @@ It is not a Wazuh manager, not a deployment package, and not a proof portal. Fee
 - The ProofCard can be regenerated from verifier output.
 - The Claim Firewall catches blocked wording outside allowed boundary sections.
 - The public-safety scanner rejects private ranges, secret-like material, raw alert markers, and private identity terms.
+- The stress harness rejects deterministic negative mutations.
 - CI can reproduce those checks without private systems.
 
 ## What It Does Not Prove
@@ -75,7 +76,7 @@ Documentation-safe placeholders are allowed: `HOST-001`, `USER-001`, `192.0.2.10
 
 `docs/wazuh-logtest-bridge.md` describes the bridge. `scripts/check_wazuh_capability.py` can identify whether a local `wazuh-logtest` binary is available. `scripts/run_wazuh_logtest_sample.py` can execute a sanitized sample only when a logtest path is explicitly supplied or discoverable.
 
-If the bridge is unavailable, the repo reports a skipped/unavailable status and keeps the proof ceiling at `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY`. A successful controlled logtest run would support only `CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED`, not runtime, signal, production, or public-safe runtime proof.
+Bridge states are `unavailable`, `available_not_executed`, and `controlled_logtest_sample_validated`. If the bridge is unavailable, the repo reports a skipped/unavailable status and keeps the proof ceiling at `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY`. A successful controlled logtest run would support only `CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED`; blocked: runtime, signal, production, and public-safe runtime proof.
 
 ## V0.1 Stress Pass
 
@@ -97,5 +98,9 @@ Start with:
 - `docs/release-readiness-checklist.md`
 - `docs/proof-ceiling-map.md`
 - `docs/wazuh-logtest-bridge.md`
+- `docs/evidence-capsule-model.md`
+- `docs/threat-model.md`
+- `docs/architecture.md`
+- `docs/public-release-packet.md`
 
 The sample data is documentation-safe and synthetic. It uses placeholders such as `HOST-001`, `USER-001`, `192.0.2.10`, `2001:db8::10`, and `C:\Users\USER-001\`.

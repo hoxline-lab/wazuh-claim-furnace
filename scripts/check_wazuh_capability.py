@@ -44,7 +44,7 @@ def check(explicit_path: str | None = None, timeout: int = 10) -> dict[str, Any]
     completed = subprocess.run([path, "-h"], text=True, capture_output=True, timeout=timeout, check=False)
     return {
         "schema_version": "wazuh-capability-result-v0",
-        "status": "available" if completed.returncode in {0, 1} else "unknown",
+        "status": "available_not_executed" if completed.returncode in {0, 1} else "unknown",
         "proof_ceiling": "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY",
         "capability": "wazuh-logtest",
         "path": path,
@@ -60,7 +60,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     result = check(args.logtest_path)
     print(json.dumps(result, indent=2, sort_keys=True))
-    if result["status"] == "available":
+    if result["status"] == "available_not_executed":
         return 0
     return 0 if args.allow_unavailable else 2
 

@@ -10,10 +10,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
+try:
+    import jsonschema
+except ImportError:  # pragma: no cover - exercised only in missing dependency environments.
+    jsonschema = None
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONTRACT = ROOT / "examples" / "ho-det-001" / "rule-contract.json"
 PROOF_CEILING = "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY"
+CONTRACT_SCHEMA = ROOT / "schemas" / "rule-contract-v0.schema.json"
+EXPECTED_RESULT_SCHEMA = ROOT / "schemas" / "expected-result-v0.schema.json"
 REQUIRED_CONTRACT_FIELDS = [
     "schema_version",
     "candidate_id",
@@ -33,6 +40,13 @@ class ContractError(ValueError):
     """Raised when a contract or fixture is invalid."""
 
 
+def display_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def load_json(path: Path) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
@@ -40,6 +54,17 @@ def load_json(path: Path) -> Any:
         raise ContractError(f"missing file: {path}") from exc
     except json.JSONDecodeError as exc:
         raise ContractError(f"invalid JSON in {path}: {exc}") from exc
+
+
+def validate_json_schema(instance: Any, schema_path: Path, label: str) -> None:
+    if jsonschema is None:
+        raise ContractError("jsonschema is required for schema-backed validation")
+    schema = load_json(schema_path)
+    try:
+        jsonschema.Draft202012Validator(schema).validate(instance)
+    except jsonschema.ValidationError as exc:
+        location = ".".join(str(part) for part in exc.path) or "<root>"
+        raise ContractError(f"{label} schema validation failed at {location}: {exc.message}") from exc
 
 
 def get_path(value: dict[str, Any], dotted_path: str) -> Any:
@@ -118,6 +143,7 @@ def verify_contract(contract_path: Path = DEFAULT_CONTRACT) -> dict[str, Any]:
     contract = load_json(contract_path)
     if not isinstance(contract, dict):
         raise ContractError("contract must be a JSON object")
+    validate_json_schema(contract, CONTRACT_SCHEMA, "rule contract")
     validate_contract_shape(contract)
 
     sample_dir = contract_path.parent
@@ -131,6 +157,7 @@ def verify_contract(contract_path: Path = DEFAULT_CONTRACT) -> dict[str, Any]:
         raise ContractError("fixtures must be JSON objects")
     if not isinstance(expected_result, dict):
         raise ContractError("expected result must be a JSON object")
+    validate_json_schema(expected_result, EXPECTED_RESULT_SCHEMA, "expected result")
     if expected_result.get("candidate_id") != contract["candidate_id"]:
         raise ContractError("expected result candidate_id does not match contract")
     if expected_result.get("proof_ceiling") != contract["proof_ceiling"]:
@@ -163,16 +190,17 @@ def verify_contract(contract_path: Path = DEFAULT_CONTRACT) -> dict[str, Any]:
         "status": status,
         "candidate_id": contract["candidate_id"],
         "proof_ceiling": contract["proof_ceiling"],
-        "contract_path": contract_path.relative_to(ROOT).as_posix(),
-        "sample_set": sample_dir.relative_to(ROOT).as_posix(),
-        "expected_result_path": expected_result_path.relative_to(ROOT).as_posix(),
+        "schema_validation": "pass",
+        "contract_path": display_path(contract_path),
+        "sample_set": display_path(sample_dir),
+        "expected_result_path": display_path(expected_result_path),
         "positive": {
-            "path": positive_path.relative_to(ROOT).as_posix(),
+            "path": display_path(positive_path),
             "matched": positive_matches,
             "expected": expected_positive,
         },
         "negative": {
-            "path": negative_path.relative_to(ROOT).as_posix(),
+            "path": display_path(negative_path),
             "matched": negative_matches,
             "expected": expected_negative,
         },

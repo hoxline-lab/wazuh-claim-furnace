@@ -19,6 +19,13 @@ UPGRADED_CEILING = "CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED"
 BASE_CEILING = "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY"
 
 
+def display_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def run_sample(sample: Path, logtest_path: str | None, timeout: int = 20) -> dict[str, Any]:
     path = check_wazuh_capability.find_logtest(logtest_path)
     if not path:
@@ -26,7 +33,7 @@ def run_sample(sample: Path, logtest_path: str | None, timeout: int = 20) -> dic
             "schema_version": "wazuh-logtest-sample-result-v0",
             "status": "unavailable",
             "proof_ceiling": BASE_CEILING,
-            "sample": sample.relative_to(ROOT).as_posix() if sample.is_relative_to(ROOT) else sample.as_posix(),
+            "sample": display_path(sample),
             "message": "wazuh-logtest was not found; no logtest proof was created.",
         }
     sample_text = sample.read_text(encoding="utf-8")
@@ -38,12 +45,12 @@ def run_sample(sample: Path, logtest_path: str | None, timeout: int = 20) -> dic
         timeout=timeout,
         check=False,
     )
-    status = "pass" if completed.returncode == 0 else "fail"
+    status = "controlled_logtest_sample_validated" if completed.returncode == 0 else "fail"
     return {
         "schema_version": "wazuh-logtest-sample-result-v0",
         "status": status,
-        "proof_ceiling": UPGRADED_CEILING if status == "pass" else BASE_CEILING,
-        "sample": sample.relative_to(ROOT).as_posix() if sample.is_relative_to(ROOT) else sample.as_posix(),
+        "proof_ceiling": UPGRADED_CEILING if status == "controlled_logtest_sample_validated" else BASE_CEILING,
+        "sample": display_path(sample),
         "logtest_path": path,
         "returncode": completed.returncode,
         "stdout_sha256_available_in_private_evidence_only": bool(completed.stdout),
@@ -60,7 +67,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     result = run_sample(args.sample, args.logtest_path)
     print(json.dumps(result, indent=2, sort_keys=True))
-    if result["status"] == "pass":
+    if result["status"] == "controlled_logtest_sample_validated":
         return 0
     if result["status"] == "unavailable" and args.allow_unavailable:
         return 0

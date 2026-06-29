@@ -22,6 +22,7 @@ def run_step(name: str, command: list[str]) -> int:
 def main() -> int:
     steps = [
         ("rule contract verifier", [sys.executable, "scripts/verify_rule_contract.py", "--format", "json"]),
+        ("stress rule contract", [sys.executable, "scripts/stress_rule_contract.py", "--format", "json"]),
         ("proofcard generator", [sys.executable, "scripts/generate_proofcard.py"]),
         ("claim boundary verifier", [sys.executable, "scripts/verify_claim_boundary.py", "--format", "json"]),
         ("public safety verifier", [sys.executable, "scripts/verify_public_safety.py", "--format", "json"]),

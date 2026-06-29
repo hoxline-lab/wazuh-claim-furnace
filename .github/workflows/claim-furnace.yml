@@ -27,8 +27,14 @@ jobs:
       - name: Run tests
         run: python -m pytest -q
 
+      - name: Run claim boundary scan
+        run: python scripts/verify_claim_boundary.py --format json
+
       - name: Run public safety scan
         run: python scripts/verify_public_safety.py --format json
+
+      - name: Run stress harness
+        run: python scripts/stress_rule_contract.py --format json
 
       - name: Run claim furnace
         run: python scripts/run_all.py

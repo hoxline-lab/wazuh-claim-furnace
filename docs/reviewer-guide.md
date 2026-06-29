@@ -13,6 +13,7 @@
 - `scripts/verify_rule_contract.py` for deterministic fixture evaluation.
 - `scripts/verify_claim_boundary.py` for blocked wording enforcement.
 - `scripts/verify_public_safety.py` for private-data and secret-pattern scanning.
+- `scripts/stress_rule_contract.py` for deterministic negative mutation coverage.
 - `scripts/generate_proofcard.py` for generated reviewer output.
 - `scripts/check_wazuh_capability.py` for optional local logtest capability discovery.
 - `.github/workflows/claim-furnace.yml` for CI scope.
@@ -22,6 +23,7 @@
 ```powershell
 py -m pip install pytest jsonschema
 py scripts\run_all.py
+py scripts\stress_rule_contract.py --format json
 py -m pytest -q
 ```
 
@@ -40,6 +42,10 @@ Only run `scripts\run_wazuh_logtest_sample.py` against sanitized samples and onl
 ## Interpret The ProofCard
 
 The ProofCard is a route card generated from local verifier output. It is useful for review because it gathers what passed, what failed, what was not tested, safe claims, blocked claims, and the proof ceiling in one place.
+
+## Evidence Capsule
+
+Open `docs/evidence-capsule-model.md` and `examples/evidence-capsule/sample-controlled-validation-capsule.json` to see how source truth, validation truth, Wazuh logtest truth, runtime truth, signal truth, and public proof remain separate.
 
 ## What Not To Infer
 

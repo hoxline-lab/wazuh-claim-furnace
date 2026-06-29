@@ -40,3 +40,12 @@ Do not copy raw alerts, private hostnames, private usernames, internal IPs, cred
 - Emit machine-readable JSON.
 - Keep the proof ceiling unchanged unless controlled logtest execution succeeds.
 
+## Bridge States
+
+| State | Meaning | Ceiling |
+|---|---|---|
+| `unavailable` | No usable logtest command was found. | `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY` |
+| `available_not_executed` | A logtest command appears present, but no sanitized sample was executed. | `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY` |
+| `controlled_logtest_sample_validated` | A sanitized sample was evaluated successfully by logtest. | `CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED` for that artifact only |
+
+blocked: runtime active status, signal observed status, production ready status, SOC deployed status, public-safe runtime proof, analyst approval, AI disposition authority, customer deployment, enterprise validation, and case closure.

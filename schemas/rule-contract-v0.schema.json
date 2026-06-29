@@ -39,22 +39,83 @@
       },
       "minItems": 1
     },
-    "match": {
-      "type": "object"
-    },
     "fixtures": {
       "type": "object",
       "required": [
         "positive",
-        "negative"
-      ]
+        "negative",
+        "expected_result"
+      ],
+      "properties": {
+        "positive": {
+          "type": "string"
+        },
+        "negative": {
+          "type": "string"
+        },
+        "expected_result": {
+          "type": "string"
+        }
+      }
     },
     "expected": {
       "type": "object",
       "required": [
         "positive_matches",
         "negative_matches"
-      ]
+      ],
+      "properties": {
+        "positive_matches": {
+          "type": "boolean"
+        },
+        "negative_matches": {
+          "type": "boolean"
+        }
+      }
+    },
+    "match": {
+      "type": "object",
+      "required": [
+        "all"
+      ],
+      "properties": {
+        "all": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "field",
+              "operator"
+            ],
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "operator": {
+                "enum": [
+                  "equals",
+                  "contains",
+                  "contains_ci",
+                  "contains_any_ci",
+                  "regex"
+                ]
+              },
+              "value": {
+                "type": "string"
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "safe_claims": {
       "type": "array",
@@ -71,4 +132,3 @@
   },
   "additionalProperties": true
 }
-

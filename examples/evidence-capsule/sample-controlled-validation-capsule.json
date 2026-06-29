@@ -1,0 +1,34 @@
+{
+  "schema_version": "evidence-capsule-v0",
+  "capsule_id": "sample-controlled-validation-capsule",
+  "candidate_id": "HO-DET-001",
+  "proof_ceiling": "SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY",
+  "source_truth": {
+    "status": "present",
+    "artifacts": [
+      "examples/ho-det-001/rule-contract.json",
+      "examples/ho-det-001/event-positive.json",
+      "examples/ho-det-001/event-negative.json"
+    ]
+  },
+  "validation_truth": {
+    "status": "sample_contract_validated",
+    "verifier": "scripts/verify_rule_contract.py"
+  },
+  "wazuh_logtest_truth": {
+    "status": "not_executed",
+    "bridge_result": "WAZUH_RUNTIME_BRIDGE_NOT_EXECUTED"
+  },
+  "runtime_truth": {
+    "status": "blocked",
+    "supported": false
+  },
+  "signal_truth": {
+    "status": "blocked",
+    "supported": false
+  },
+  "public_proof": {
+    "status": "sample_level_only",
+    "public_safe_runtime_proof": false
+  }
+}

@@ -49,6 +49,7 @@ ALLOWED_SECTION_MARKERS = (
 )
 ALLOWED_LINE_MARKERS = (
     "does not prove",
+    "do not prove",
     "do not infer",
     "not tested",
     "not supported",
@@ -62,7 +63,7 @@ ALLOWED_JSON_PATH_PARTS = (
     "not_tested",
     "blocked",
 )
-EXCLUDED_DIRS = {".git", ".pytest_cache", "__pycache__"}
+EXCLUDED_DIRS = {".git", ".pytest_cache", "__pycache__", "test-tmp", ".pytest_tmp"}
 
 
 def public_files(root: Path = ROOT) -> Iterable[Path]:
