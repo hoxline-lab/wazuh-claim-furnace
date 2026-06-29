@@ -13,6 +13,7 @@ This repository can prove only deterministic validation of controlled local samp
 - The negative fixture did not match the contract.
 - The ProofCard was generated from controlled local verifier output.
 - The Claim Firewall scanned public markdown and JSON artifacts for blocked wording.
+- The public-safety scanner checked public repo files for private data and secret-like material.
 - The repository is CI-checkable without private telemetry or a live Wazuh manager.
 
 ## Blocked Claims
@@ -38,9 +39,8 @@ Public artifacts in this repo must contain only synthetic fixtures, documentatio
 
 ## Promotion Boundary
 
-The current promotion path stops at sample-level validation. Any stronger claim would require a separate evidence gate, privacy review, stale review, wording review, and human approval before public wording changes.
+The current promotion path stops at sample-level validation. If sanitized controlled `wazuh-logtest` execution succeeds, the ceiling may move only to `CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED`. Any stronger claim would require a separate evidence gate, privacy review, stale review, wording review, and human approval before public wording changes.
 
 ## Reviewer Interpretation
 
 Treat this repository as a reproducible claim-control lab. A green run means the local sample contract and claim firewall passed. It does not mean a live manager evaluated telemetry, a SOC deployed the rule, an analyst approved a case, or an AI system made a disposition.
-

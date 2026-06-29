@@ -24,3 +24,17 @@ def test_forbidden_claim_allowed_in_blocked_section(tmp_path: Path) -> None:
     findings = verify_claim_boundary.scan_markdown(safe, safe.read_text(encoding="utf-8"))
     assert findings == []
 
+
+def test_unsafe_claim_in_readme_like_text_fails(tmp_path: Path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text("# Lab\n\n## Supported Claim\n\nThis is live Wazuh proof.\n", encoding="utf-8")
+    findings = verify_claim_boundary.scan_markdown(readme, readme.read_text(encoding="utf-8"))
+    assert findings
+    assert findings[0]["phrase"] == "live Wazuh proof"
+
+
+def test_blocked_terms_allowed_in_not_tested_context(tmp_path: Path) -> None:
+    doc = tmp_path / "proofcard.md"
+    doc.write_text("# Card\n\n## What Was Not Tested\n\n- signal observed\n", encoding="utf-8")
+    findings = verify_claim_boundary.scan_markdown(doc, doc.read_text(encoding="utf-8"))
+    assert findings == []

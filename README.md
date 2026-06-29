@@ -1,19 +1,27 @@
 # wazuh-claim-furnace
 
-`wazuh-claim-furnace` is a hoxline-lab experiment for testing one narrow security-engineering contract: a Wazuh-style rule candidate can be evaluated against controlled positive and negative samples, rendered into a ProofCard, and checked by a Claim Firewall before anyone is allowed to say more than the evidence supports.
+`wazuh-claim-furnace` is a measurable Wazuh claim-control lab: static contract validation, public-safety scanning, ProofCard generation, and an optional read-only `wazuh-logtest` bridge without runtime overclaiming.
 
-This repository is not a Wazuh manager, not a detection deployment, and not a proof portal. It is a small furnace for claim discipline: feed it a contract, fixtures, and allowed wording; it returns deterministic validation output and rejects unsafe claims.
+It is not a Wazuh manager, not a deployment package, and not a proof portal. Feed it a contract, fixtures, and public wording; it returns deterministic validation output, rejects unsafe claims, and keeps every stronger claim behind an evidence gate.
 
-## What It Proves
+## Proof Ceiling
 
-- A sample-level Wazuh-style rule contract is structurally valid.
+| State | Meaning |
+|---|---|
+| Current ceiling | `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY` |
+| Optional next ceiling | `CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED` only if sanitized controlled `wazuh-logtest` execution succeeds |
+| Still blocked after logtest | runtime, signal, production, SOC deployment, public-safe runtime proof, analyst approval, AI disposition authority, case closure |
+
+## What It Proves Now
+
+- The sample-level Wazuh-style rule contract is structurally valid.
 - The positive fixture matches the contract.
 - The negative fixture does not match the contract.
+- `expected-result.json` agrees with contract expectations.
 - The ProofCard can be regenerated from verifier output.
 - The Claim Firewall catches blocked wording outside allowed boundary sections.
+- The public-safety scanner rejects private ranges, secret-like material, raw alert markers, and private identity terms.
 - CI can reproduce those checks without private systems.
-
-Proof ceiling: `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY`.
 
 ## What It Does Not Prove
 
@@ -28,18 +36,22 @@ Those phrases are intentionally blocked unless they appear in explicit boundary 
 ## Run Locally
 
 ```powershell
-python --version
-python -m pip install -U pip
-python -m pip install pytest jsonschema
-python scripts/run_all.py
-python -m pytest -q
+py --version
+py -m pip install -U pip
+py -m pip install pytest jsonschema
+py scripts\run_all.py
+py -m pytest -q
 ```
 
 The primary verifier also supports direct JSON output:
 
 ```powershell
-python scripts/verify_rule_contract.py --format json
+py scripts\verify_rule_contract.py --format json
+py scripts\verify_claim_boundary.py --format json
+py scripts\verify_public_safety.py --format json
 ```
+
+Use `python` instead of `py` on systems where Python is installed that way.
 
 ## CI Contract
 
@@ -53,6 +65,26 @@ CI passing means the static/sample-level contract and claim boundary checks pass
 
 The firewall is intentionally conservative. If public copy needs stronger wording, the correct move is to change evidence and promotion gates first, not to loosen the sentence.
 
+## Public Safety Gate
+
+`scripts/verify_public_safety.py` scans public repo surfaces for private IP ranges, secret-like keys, personal Windows user paths, raw alert markers, private host hints, customer references, and SSH private key material.
+
+Documentation-safe placeholders are allowed: `HOST-001`, `USER-001`, `192.0.2.10`, `2001:db8::10`, and `C:\Users\USER-001\`.
+
+## Optional Wazuh Logtest Bridge
+
+`docs/wazuh-logtest-bridge.md` describes the bridge. `scripts/check_wazuh_capability.py` can identify whether a local `wazuh-logtest` binary is available. `scripts/run_wazuh_logtest_sample.py` can execute a sanitized sample only when a logtest path is explicitly supplied or discoverable.
+
+If the bridge is unavailable, the repo reports a skipped/unavailable status and keeps the proof ceiling at `SAMPLE_LEVEL_WAZUH_CONTRACT_VALIDATION_ONLY`. A successful controlled logtest run would support only `CONTROLLED_WAZUH_LOGTEST_SAMPLE_VALIDATED`, not runtime, signal, production, or public-safe runtime proof.
+
+## V0.1 Stress Pass
+
+- Added public-safety scanning.
+- Added optional Wazuh logtest bridge design and scripts.
+- Strengthened failure-mode tests for expectation drift, ceiling drift, missing fixtures, unsupported operators, negative matches, and generated ProofCard scanning.
+- Added reviewer readiness docs and a proof-ceiling map.
+- Kept runtime and signal claims blocked.
+
 ## Reviewer Path
 
 Start with:
@@ -62,5 +94,8 @@ Start with:
 - `proofcards/ho-det-001-proofcard.md`
 - `CLAIM_BOUNDARY.md`
 - `docs/reviewer-guide.md`
+- `docs/release-readiness-checklist.md`
+- `docs/proof-ceiling-map.md`
+- `docs/wazuh-logtest-bridge.md`
 
 The sample data is documentation-safe and synthetic. It uses placeholders such as `HOST-001`, `USER-001`, `192.0.2.10`, `2001:db8::10`, and `C:\Users\USER-001\`.

@@ -27,6 +27,8 @@ jobs:
       - name: Run tests
         run: python -m pytest -q
 
+      - name: Run public safety scan
+        run: python scripts/verify_public_safety.py --format json
+
       - name: Run claim furnace
         run: python scripts/run_all.py
-
